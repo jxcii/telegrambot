@@ -13,11 +13,21 @@ std::string DownloadFileToJXSERVER(TgBot::Bot& bot, TgBot::Message::Ptr message,
     {
         // URL of the image file to download
         std::string url = "https://api.telegram.org/file/bot5310616909:AAHqrFdIoW21YPTAtnAxDRzSVJoILL4XjG4/";
-        if(type == 0) {
+        switch (type)
+        {
+        case 0:
             fileName = bot.getApi().getFile(message->document->fileId)->filePath.substr(10);
             url.append(bot.getApi().getFile(message->document->fileId)->filePath);
+            break;
+        case 1:
+            fileName = bot.getApi().getFile((*(message->photo.begin()+3))->fileId)->filePath.substr(7);
+            url.append(bot.getApi().getFile((*(message->photo.begin()+3))->fileId)->filePath);
+            printf("%s and %s\n", fileName.c_str(), url.c_str());
+            break;
+        
+        default:
+            break;
         }
-        // std::ofstream fi(bot.getApi().getFile(message->document->fileId)->filePath.c_str(), std::ios::trunc);
         //  Open a binary file to write the downloaded data
         FILE *file = fopen(fileName.c_str(), "wb");
         if (!file)

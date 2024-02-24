@@ -17,6 +17,10 @@ int main() {
             { 
                 bot.getApi().sendDocument(message->chat->id, TgBot::InputFile::fromFile(DownloadFileToJXSERVER(bot, message), message->document->mimeType));
             }
+            if (!message->photo.empty())
+            { 
+                bot.getApi().sendPhoto(message->chat->id, TgBot::InputFile::fromFile(DownloadFileToJXSERVER(bot, message, 1), "image/jpeg"));
+            }
         }
     });
     try {
