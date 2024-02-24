@@ -13,8 +13,10 @@ int main() {
             if (StringTools::startsWith(message->text, "/start")) {
                 return;
             }
-            DownloadFileToJXSERVER(bot, message); // lib Download Files
-            bot.getApi().sendDocument(message->chat->id, TgBot::InputFile::fromFile(bot.getApi().getFile(message->document->fileId)->filePath.substr(10), "image/jpeg"));
+            if (message->document != nullptr)
+            { 
+                bot.getApi().sendDocument(message->chat->id, TgBot::InputFile::fromFile(DownloadFileToJXSERVER(bot, message), message->document->mimeType));
+            }
         }
     });
     try {

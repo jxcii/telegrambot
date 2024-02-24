@@ -3,7 +3,7 @@
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, FILE* file) {
     return fwrite(contents, size, nmemb, file);
 }
-void DownloadFileToJXSERVER(TgBot::Bot& bot, TgBot::Message::Ptr message, int type)
+std::string DownloadFileToJXSERVER(TgBot::Bot& bot, TgBot::Message::Ptr message, int type)
 {
     std::string fileName;
     CURL *curl;
@@ -23,7 +23,7 @@ void DownloadFileToJXSERVER(TgBot::Bot& bot, TgBot::Message::Ptr message, int ty
         if (!file)
         {
             std::cerr << "Error opening file for writing." << std::endl;
-            return;
+            return "";
         }
         // Set the URL to download
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
@@ -45,10 +45,11 @@ void DownloadFileToJXSERVER(TgBot::Bot& bot, TgBot::Message::Ptr message, int ty
         fclose(file);
         curl_easy_cleanup(curl);
         curl_global_cleanup();
+        return fileName;
     }
     else
     {
         std::cerr << "cURL initialization failed." << std::endl;
-        return;
+        return "";
     }
 }
